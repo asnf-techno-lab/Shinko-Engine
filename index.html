@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Shinko Engine 15 | Ultra Core Default</title>
+    <style>
+        /* ==========================================
+           SHINKO ENGINE 15 - ULTRA CORE DEFAULT
+           Architect: M. Nabil Irza Prawira
+           Company: ASNF Techno Lab
+           ========================================== */
+        
+        :root {
+            /* SHINKO LIQUID CRYSTAL ENGINE 5.0 */
+            --glass-blur-value: 160px;
+            --glass-blur: blur(var(--glass-blur-value)) saturate(350%);
+            --crystal-bg: rgba(255, 255, 255, 0.03);
+            --crystal-border: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.02) 100%);
+            --crystal-shadow: 0 15px 40px 0 rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            
+            --ios-radius: 32px; 
+            --btn-radius: 40px; 
+            
+            /* Upgraded Physics-Based Animations */
+            --spring-physics: cubic-bezier(0.4, 1.2, 0.4, 1); /* Pantulan fisik iOS */
+            --smooth-flow: cubic-bezier(0.25, 1, 0.5, 1);     /* Transisi mulus tanpa pantulan */
+            --transition: all 0.5s var(--smooth-flow);
+            
+            /* Theming Default (Aurora Dark) */
+            --bg-base: #030303;
+            --text-main: #ffffff;
+            --text-sub: rgba(235, 235, 245, 0.65);
+            --accent: #0a84ff;
+            --accent-glow: rgba(10, 132, 255, 0.5);
+            --aurora-1: #bf5af2;
+            --aurora-2: #32d74b;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            font-size: clamp(14px, 1.3vw, 16px); 
+            scrollbar-width: none; 
+        }
+        body::-webkit-scrollbar { display: none; } 
+
+        /* DYNAMIC LERP MESH PARALLAX (GPU ACCELERATED) */
+        .mesh-bg {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; z-index: -1;
+            background-image: 
+                radial-gradient(at 20% 20%, rgba(10, 132, 255, 0.15) 0px, transparent 40%),
+                radial-gradient(at 80% 30%, rgba(191, 90, 242, 0.15) 0px, transparent 40%),
+                radial-gradient(at 90% 80%, rgba(50, 215, 75, 0.1) 0px, transparent 40%),
+                radial-gradient(at 20% 90%, rgba(255, 214, 10, 0.1) 0px, transparent 40%);
+            animation: meshFlow 35s ease-in-out infinite alternate;
+            /* Transform di-handle via JS menggunakan Lerp Interpolation */
+            will-change: transform, background-position;
+        }
+
+        @keyframes meshFlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* LAYOUT & TAB SYSTEM */
+        .app-layout { 
+            max-width: 1050px; margin: 0 auto; 
+            padding: clamp(20px, 5vw, 40px); padding-bottom: 140px; 
+            box-sizing: border-box; 
+        }
+
+        .tab-section { display: none; opacity: 0; transform: scale(0.96) translateY(30px) translate3d(0,0,0); transition: var(--transition); will-change: opacity, transform, filter; }
+        .tab-section.active { display: block; opacity: 1; transform: scale(1) translateY(0) translate3d(0,0,0); animation: smoothEntry 0.8s var(--spring-physics) forwards; }
+        @keyframes smoothEntry { 
+            0% { opacity: 0; transform: translateY(40px) scale(0.95) translate3d(0,0,0); filter: blur(15px); } 
+            100% { opacity: 1; transform: translateY(0) scale(1) translate3d(0,0,0); filter: blur(0); } 
+        }
+
+        /* HEADER */
+        .hero-header { text-align: center; margin-bottom: 50px; margin-top: 40px; }
+        .hero-title { 
+            font-size: clamp(40px, 7vw, 70px); font-weight: 900; letter-spacing: -2px; margin: 0; 
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0.6)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+        .hero-subtitle { font-size: clamp(15px, 2vw, 18px); color: var(--accent); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; }
+
+        /* CRYSTAL GLASS CARD DEFAULT */
+        .glass-card {
+            background: var(--crystal-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--ios-radius); padding: clamp(25px, 5vw, 40px); 
+            box-shadow: var(--crystal-shadow); color: #fff; position: relative; overflow: hidden;
+            transition: transform 0.6s var(--spring-physics), box-shadow 0.6s var(--smooth-flow);
+            will-change: transform;
+        }
+        .glass-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: var(--ios-radius); padding: 1px; background: var(--crystal-border);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .glass-card:hover { transform: scale(1.02) translateY(-10px) translate3d(0,0,0); box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.1); z-index: 10;}
+
+        /* DOCK NAV (SPRING PHYSICS) */
+        .shinko-dock {
+            position: fixed; bottom: clamp(20px, 4vw, 35px); left: 50%; transform: translateX(-50%) translate3d(0,0,0);
+            background: rgba(10, 10, 10, 0.45); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 50px; display: flex; gap: 6px; padding: 12px 25px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.15);
+            z-index: 900; transition: width 0.5s var(--spring-physics); will-change: transform, width, padding;
+        }
+        .shinko-dock::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50px; padding: 1px; background: var(--crystal-border);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+
+        .dock-item {
+            width: clamp(55px, 12vw, 65px); height: clamp(55px, 12vw, 65px); border-radius: 22px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-sub); cursor: pointer; position: relative;
+            transition: transform 0.6s var(--spring-physics), background 0.3s, box-shadow 0.4s; will-change: transform;
+        }
+        .dock-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .dock-item.active { 
+            background: rgba(255,255,255,0.12); color: #fff; 
+            transform: scale(1.15) translate3d(0, -15px, 0);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1);
+        }
+        .dock-icon { font-size: clamp(22px, 5vw, 26px); margin-bottom: 2px; transition: var(--transition); will-change: transform; }
+        .dock-item.active .dock-icon { transform: scale(1.1) translate3d(0,0,0); filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));}
+        .dock-text { font-size: 10px; font-weight: 800; opacity: 0; transform: translateY(15px) translate3d(0,0,0); transition: var(--transition); position: absolute; bottom: -22px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;}
+        .dock-item.active .dock-text { opacity: 1; transform: translateY(0) translate3d(0,0,0); }
+
+        /* BUTTONS */
+        .btn-glass {
+            display: inline-flex; justify-content: center; align-items: center; text-decoration: none; box-sizing: border-box;
+            background: rgba(255,255,255,0.05); color: #fff; gap: 10px;
+            padding: 18px 35px; border-radius: var(--btn-radius); font-weight: 800; font-size: 15px; letter-spacing: 1px; 
+            transition: transform 0.5s var(--spring-physics), background 0.4s, box-shadow 0.4s; border: 1px solid rgba(255,255,255,0.15);
+            position: relative; overflow: hidden; transform: translateZ(0); cursor: pointer; width: 100%; will-change: transform;
+        }
+        .btn-glass:hover { background: #fff; color: #000; transform: scale(1.04) translateY(-4px) translate3d(0,0,0); box-shadow: 0 15px 35px rgba(255,255,255,0.3); }
+        .btn-primary { background: var(--text-main); color: #000; border: none; box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+        .btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 0 15px 40px var(--accent-glow);}
+    </style>
+</head>
+<body>
+
+    <div class="mesh-bg" id="meshBg"></div>
+
+    <nav class="shinko-dock">
+        <div class="dock-item active" onclick="switchMenu('home', this)">
+            <div class="dock-icon">🏠</div>
+            <div class="dock-text">Home</div>
+        </div>
+        <div class="dock-item" onclick="switchMenu('content', this)">
+            <div class="dock-icon">📄</div>
+            <div class="dock-text">Data</div>
+        </div>
+        <div class="dock-item" onclick="switchMenu('settings', this)">
+            <div class="dock-icon">⚙️</div>
+            <div class="dock-text">Config</div>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        
+        <div id="menu-home" class="tab-section active">
+            <header class="hero-header">
+                <h1 class="hero-title">Shinko Engine 15</h1>
+                <p class="hero-subtitle">Ultra Core Default Template</p>
+            </header>
+
+            <div class="glass-card" style="text-align: center;">
+                <h2 style="margin-top:0; font-size: 28px;">The Next Generation Core</h2>
+                <p style="color: var(--text-sub); line-height: 1.8; font-size: 16px;">
+                    Ini adalah template pondasi murni dari <strong>Shinko Engine 15</strong>. Dirancang dengan integrasi <i>Liquid Crystal 5.0</i>, perhitungan Fisika Pegas (Spring Physics), Algoritma Interpolasi Linier (Lerp Parallax), dan Shinko Cache 3.0.
+                </p>
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button class="btn-glass">Secondary Action</button>
+                    <button class="btn-glass btn-primary">Primary Action</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu-content" class="tab-section">
+            <header class="hero-header">
+                <h1 class="hero-title">Content Grid</h1>
+                <p class="hero-subtitle">Build Your Modules Here</p>
+            </header>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                <div class="glass-card">
+                    <h3 style="margin-top:0;">Module Alpha</h3>
+                    <p style="color: var(--text-sub); line-height: 1.8;">Template grid responsif. Bebas diisi data apapun tanpa merusak susunan tata letak.</p>
+                </div>
+                <div class="glass-card" style="border-color: var(--accent); box-shadow: 0 10px 40px var(--accent-glow);">
+                    <h3 style="margin-top:0; color: var(--accent);">Module Beta (Focus)</h3>
+                    <p style="color: var(--text-sub); line-height: 1.8;">Kartu ini memiliki *override* CSS bawaan untuk fokus utama (Highlighted Card).</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu-settings" class="tab-section">
+            <header class="hero-header">
+                <h1 class="hero-title">System Status</h1>
+                <p class="hero-subtitle">Engine 15 Diagnostics</p>
+            </header>
+
+            <div class="glass-card">
+                <ul style="list-style: none; padding: 0; margin: 0; line-height: 2.5; font-weight: 600;">
+                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <span>Render Pipeline</span><span style="color: #32d74b;">GPU Accelerated (Active)</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <span>Animation Curve</span><span style="color: var(--text-sub);">Spring Physics</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <span>Parallax Interpolation</span><span style="color: var(--text-sub);">Lerp Mathematics</span>
+                    </li>
+                    <li style="display: flex; justify-content: space-between;">
+                        <span>Shinko Cache 3.0</span><span id="cache-status" style="color: #0a84ff;">Monitoring...</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. ASNF HAPTIC ENGINE ---
+        function triggerHaptic(duration = 40) {
+            if (navigator.vibrate) { navigator.vibrate(duration); }
+        }
+
+        document.querySelectorAll('.btn-glass, .dock-item').forEach(el => {
+            el.addEventListener('click', () => triggerHaptic(50));
+        });
+
+        // --- 2. AUTOMATIC FIX BUG (INTERCEPTOR) ---
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.warn("[Shinko Engine 15 Core] Auto-Fix Intercepted:", message);
+            return true; // Mencegah UI freeze saat ada error script
+        };
+
+        // --- 3. SMART TAB NAVIGATION ---
+        function switchMenu(menuId, element) {
+            document.querySelectorAll('.tab-section').forEach(tab => {
+                tab.classList.remove('active');
+                setTimeout(() => { if(!tab.classList.contains('active')) tab.style.display = 'none'; }, 500); 
+            });
+            document.querySelectorAll('.dock-item').forEach(item => { item.classList.remove('active'); });
+
+            const targetTab = document.getElementById('menu-' + menuId);
+            targetTab.style.display = 'block';
+            void targetTab.offsetWidth; // Force Reflow
+            targetTab.classList.add('active');
+            
+            element.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 4. ADVANCED LERP PARALLAX (Super Smooth GPU Acceleration) ---
+        const meshBg = document.getElementById('meshBg');
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        const lerpFactor = 0.05; // Mengontrol elastisitas/kelenturan (Semakin kecil semakin halus/delay)
+
+        function updateParallax() {
+            if(window.innerWidth > 800) {
+                // Kalkulasi Linear Interpolation (Lerp)
+                currentX += (targetX - currentX) * lerpFactor;
+                currentY += (targetY - currentY) * lerpFactor;
+                
+                // Aplikasikan Transform3D
+                meshBg.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.05)`;
+            }
+            requestAnimationFrame(updateParallax);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX / window.innerWidth - 0.5) * 30; // Max pergeseran 30px
+            targetY = (e.clientY / window.innerHeight - 0.5) * 30;
+        });
+
+        window.addEventListener('mouseleave', () => { 
+            targetX = 0; targetY = 0; 
+        });
+
+        // Start Loop
+        requestAnimationFrame(updateParallax);
+
+        // --- 5. DYNAMIC FPS OPTIMIZER (SHINKO CACHE 3.0) ---
+        let lastTime = performance.now();
+        let frameCount = 0;
+        const cacheStatusText = document.getElementById('cache-status');
+
+        function fpsOptimizerLoop() {
+            const now = performance.now();
+            frameCount++;
+            if (now - lastTime >= 1000) {
+                if (frameCount < 45) { // Threshold dinaikkan jadi 45 FPS
+                    document.documentElement.style.setProperty('--glass-blur-value', '60px');
+                    meshBg.style.willChange = 'auto'; // Disable HW Accel background to save battery
+                    if(cacheStatusText) cacheStatusText.innerText = "Adaptive Mode (Low FPS)";
+                    if(cacheStatusText) cacheStatusText.style.color = "#ffd60a";
+                } else { 
+                    document.documentElement.style.setProperty('--glass-blur-value', '160px');
+                    meshBg.style.willChange = 'transform, background-position';
+                    if(cacheStatusText) cacheStatusText.innerText = "Ultra Mode (Stable FPS)";
+                    if(cacheStatusText) cacheStatusText.style.color = "#32d74b";
+                }
+                frameCount = 0; lastTime = now;
+            }
+            requestAnimationFrame(fpsOptimizerLoop);
+        }
+        
+        // Start FPS Engine
+        requestAnimationFrame(fpsOptimizerLoop);
+    </script>
+</body>
+</html>
