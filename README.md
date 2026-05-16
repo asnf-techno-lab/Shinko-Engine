@@ -24,6 +24,7 @@ Shinko Engine serves as the core powerhouse for all major flagship projects unde
 - The Name Vault
 - AIOG (All In One Genshin)
 - Magic Random Pro (MRP)
+- YukXi Software Installer Suite
 
 ## License & Copyright
 Distributed under an Exclusive Proprietary License. Unauthorized redistribution, modification, or plagiarism of this engine's core architecture is strictly prohibited. Please refer to `LICENSE` for more information.
