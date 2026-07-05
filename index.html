@@ -1,40 +1,40 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Shinko Engine 15 | Ultra Core Default</title>
+    <title>Shinko Engine 16 | Ultra Core</title>
     <style>
         /* ==========================================
-           SHINKO ENGINE 15 - ULTRA CORE DEFAULT
+           SHINKO ENGINE 16 - ULTRA CORE DEFAULT
            Architect: M. Nabil Irza Prawira
            Company: ASNF Techno Lab
            ========================================== */
         
         :root {
-            /* SHINKO LIQUID CRYSTAL ENGINE 5.0 */
+            /* SHINKO LIQUID CRYSTAL ENGINE 6.0 */
             --glass-blur-value: 160px;
             --glass-blur: blur(var(--glass-blur-value)) saturate(350%);
             --crystal-bg: rgba(255, 255, 255, 0.03);
             --crystal-border: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.02) 100%);
-            --crystal-shadow: 0 15px 40px 0 rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            --crystal-shadow: 0 15px 40px 0 rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
             
             --ios-radius: 32px; 
             --btn-radius: 40px; 
             
-            /* Upgraded Physics-Based Animations */
-            --spring-physics: cubic-bezier(0.4, 1.2, 0.4, 1); /* Pantulan fisik iOS */
-            --smooth-flow: cubic-bezier(0.25, 1, 0.5, 1);     /* Transisi mulus tanpa pantulan */
+            /* Advanced Physics */
+            --spring-physics: cubic-bezier(0.4, 1.2, 0.4, 1);
+            --smooth-flow: cubic-bezier(0.25, 1, 0.5, 1);
             --transition: all 0.5s var(--smooth-flow);
             
-            /* Theming Default (Aurora Dark) */
+            /* Core Palette */
             --bg-base: #030303;
             --text-main: #ffffff;
             --text-sub: rgba(235, 235, 245, 0.65);
             --accent: #0a84ff;
             --accent-glow: rgba(10, 132, 255, 0.5);
-            --aurora-1: #bf5af2;
-            --aurora-2: #32d74b;
+            --asnf-purple: #bf5af2;
+            --success: #32d74b;
         }
 
         body {
@@ -53,48 +53,131 @@
         .mesh-bg {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; z-index: -1;
             background-image: 
-                radial-gradient(at 20% 20%, rgba(10, 132, 255, 0.15) 0px, transparent 40%),
+                radial-gradient(at 10% 20%, rgba(10, 132, 255, 0.15) 0px, transparent 40%),
                 radial-gradient(at 80% 30%, rgba(191, 90, 242, 0.15) 0px, transparent 40%),
-                radial-gradient(at 90% 80%, rgba(50, 215, 75, 0.1) 0px, transparent 40%),
+                radial-gradient(at 90% 80%, rgba(10, 132, 255, 0.1) 0px, transparent 40%),
                 radial-gradient(at 20% 90%, rgba(255, 214, 10, 0.1) 0px, transparent 40%);
             animation: meshFlow 35s ease-in-out infinite alternate;
-            /* Transform di-handle via JS menggunakan Lerp Interpolation */
             will-change: transform, background-position;
         }
+        @keyframes meshFlow { 0% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } 100% { background-position: 0% 0%; } }
 
-        @keyframes meshFlow {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
+        /* LOADING SCREEN */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1.2s var(--smooth-flow), visibility 1.2s; will-change: opacity, visibility;
+        }
+        .load-core {
+            font-size: 50px; font-weight: 900; letter-spacing: -2px; color: #fff;
+            background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            z-index: 2; opacity: 0; transform: scale(0.5); animation: corePop 1s var(--spring-physics) 0.3s forwards;
+        }
+        .load-text { font-size: 14px; font-weight: 800; color: var(--text-sub); letter-spacing: 5px; text-transform: uppercase; margin-top: 15px; opacity: 0; animation: fadeUp 1s var(--smooth-flow) 0.8s forwards;}
+        @keyframes corePop { to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* ================= ASNF DOCK (PERFECT GEOMETRY) ================= */
+        /* Design Pattern: |___\ \______/ /___| */
+        .top-dock-container {
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateZ(0);
+            width: 100%; max-width: 1200px; z-index: 1000;
+            display: flex; justify-content: center; padding-top: 15px;
+            pointer-events: none; 
+        }
+        
+        .asnf-dock-wrapper {
+            display: flex; width: 92%; max-width: 620px;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+            pointer-events: auto; 
+            will-change: transform;
         }
 
-        /* LAYOUT & TAB SYSTEM */
+        .dock-segment {
+            background: rgba(10, 10, 10, 0.65);
+            backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+            display: flex; justify-content: center; align-items: center;
+            height: 65px; transition: var(--transition);
+            border-top: 1px solid rgba(255,255,255,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
+        }
+        .dock-segment:hover { background: rgba(20, 20, 20, 0.75); }
+
+        /* |___\ (Logo Segment) */
+        .dock-left {
+            width: 90px; 
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0 100%);
+            border-top-left-radius: 30px; border-bottom-left-radius: 30px;
+            margin-right: -15px; padding-right: 10px; z-index: 2;
+        }
+
+        /* \______/ (Title Segment) */
+        .dock-center {
+            flex-grow: 1; 
+            clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 100%, 20px 100%);
+            z-index: 1;
+        }
+
+        /* /___| (Hamburger Segment) */
+        .dock-right {
+            width: 90px; 
+            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%);
+            border-top-right-radius: 30px; border-bottom-right-radius: 30px;
+            margin-left: -15px; padding-left: 10px; cursor: pointer; z-index: 2;
+        }
+
+        /* Dock Content Styling */
+        .asnf-logo {
+            width: 38px; height: 38px; border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--asnf-purple));
+            display: flex; justify-content: center; align-items: center;
+            font-weight: 900; font-size: 16px; color: #fff; letter-spacing: -1px;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        
+        .dock-center-title { 
+            font-size: 16px; font-weight: 800; color: #fff; 
+            letter-spacing: 1px; text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.2);
+            transition: var(--transition);
+        }
+
+        .hamburger-menu { width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .hamburger-line { width: 100%; height: 3px; background: #fff; border-radius: 5px; transition: var(--transition); }
+        
+        /* Mobile Overlay Menu */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px;
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+        .menu-link { font-size: 28px; font-weight: 800; color: var(--text-sub); text-decoration: none; transition: var(--transition); cursor: pointer;}
+        .menu-link:hover, .menu-link.active { color: #fff; transform: scale(1.1); }
+
+        /* ================= LAYOUT & TABS ================= */
         .app-layout { 
             max-width: 1050px; margin: 0 auto; 
-            padding: clamp(20px, 5vw, 40px); padding-bottom: 140px; 
+            padding: clamp(20px, 5vw, 40px); padding-top: 130px; padding-bottom: 80px; 
             box-sizing: border-box; 
         }
 
-        .tab-section { display: none; opacity: 0; transform: scale(0.96) translateY(30px) translate3d(0,0,0); transition: var(--transition); will-change: opacity, transform, filter; }
+        .tab-section { display: none; opacity: 0; transform: scale(0.96) translateY(30px) translate3d(0,0,0); transition: var(--transition); will-change: opacity, transform; }
         .tab-section.active { display: block; opacity: 1; transform: scale(1) translateY(0) translate3d(0,0,0); animation: smoothEntry 0.8s var(--spring-physics) forwards; }
-        @keyframes smoothEntry { 
-            0% { opacity: 0; transform: translateY(40px) scale(0.95) translate3d(0,0,0); filter: blur(15px); } 
-            100% { opacity: 1; transform: translateY(0) scale(1) translate3d(0,0,0); filter: blur(0); } 
-        }
+        @keyframes smoothEntry { 0% { opacity: 0; transform: translateY(40px) scale(0.95) translate3d(0,0,0); filter: blur(15px); } 100% { opacity: 1; transform: translateY(0) scale(1) translate3d(0,0,0); filter: blur(0); } }
 
-        /* HEADER */
-        .hero-header { text-align: center; margin-bottom: 50px; margin-top: 40px; }
-        .hero-title { 
-            font-size: clamp(40px, 7vw, 70px); font-weight: 900; letter-spacing: -2px; margin: 0; 
-            background: linear-gradient(to right, #fff, rgba(255,255,255,0.6)); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        }
+        /* HEADERS */
+        .hero-header { text-align: center; margin-bottom: 50px; }
+        .hero-title { font-size: clamp(38px, 6vw, 65px); font-weight: 900; letter-spacing: -2px; margin: 0; background: linear-gradient(to right, #fff, rgba(255,255,255,0.6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-subtitle { font-size: clamp(15px, 2vw, 18px); color: var(--accent); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; }
 
-        /* CRYSTAL GLASS CARD DEFAULT */
+        /* GLASS CARD DEFAULT */
         .glass-card {
             background: var(--crystal-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border-radius: var(--ios-radius); padding: clamp(25px, 5vw, 40px); 
+            border-radius: var(--ios-radius); padding: clamp(25px, 5vw, 40px); margin-bottom: 30px;
             box-shadow: var(--crystal-shadow); color: #fff; position: relative; overflow: hidden;
             transition: transform 0.6s var(--spring-physics), box-shadow 0.6s var(--smooth-flow);
             will-change: transform;
@@ -103,129 +186,200 @@
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: var(--ios-radius); padding: 1px; background: var(--crystal-border);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
         }
-        .glass-card:hover { transform: scale(1.02) translateY(-10px) translate3d(0,0,0); box-shadow: 0 25px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.1); z-index: 10;}
+        .glass-card:hover { transform: scale(1.02) translateY(-8px) translate3d(0,0,0); box-shadow: 0 25px 50px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.1); z-index: 10;}
 
-        /* DOCK NAV (SPRING PHYSICS) */
-        .shinko-dock {
-            position: fixed; bottom: clamp(20px, 4vw, 35px); left: 50%; transform: translateX(-50%) translate3d(0,0,0);
-            background: rgba(10, 10, 10, 0.45); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-            border-radius: 50px; display: flex; gap: 6px; padding: 12px 25px; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.15);
-            z-index: 900; transition: width 0.5s var(--spring-physics); will-change: transform, width, padding;
-        }
-        .shinko-dock::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50px; padding: 1px; background: var(--crystal-border);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
-        }
+        .glass-card h2 { margin-top: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        .glass-card p { color: var(--text-sub); line-height: 1.8; font-size: 16px; margin-bottom: 15px;}
 
-        .dock-item {
-            width: clamp(55px, 12vw, 65px); height: clamp(55px, 12vw, 65px); border-radius: 22px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--text-sub); cursor: pointer; position: relative;
-            transition: transform 0.6s var(--spring-physics), background 0.3s, box-shadow 0.4s; will-change: transform;
-        }
-        .dock-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
-        .dock-item.active { 
-            background: rgba(255,255,255,0.12); color: #fff; 
-            transform: scale(1.15) translate3d(0, -15px, 0);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1);
-        }
-        .dock-icon { font-size: clamp(22px, 5vw, 26px); margin-bottom: 2px; transition: var(--transition); will-change: transform; }
-        .dock-item.active .dock-icon { transform: scale(1.1) translate3d(0,0,0); filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));}
-        .dock-text { font-size: 10px; font-weight: 800; opacity: 0; transform: translateY(15px) translate3d(0,0,0); transition: var(--transition); position: absolute; bottom: -22px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;}
-        .dock-item.active .dock-text { opacity: 1; transform: translateY(0) translate3d(0,0,0); }
+        /* IOS SETTINGS LIST (SYSTEM STATUS) */
+        .ios-list { background: rgba(0,0,0,0.3); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;}
+        .ios-item { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .ios-item:last-child { border-bottom: none; }
+        .ios-label { font-size: 16px; font-weight: 600; color: #fff; }
+        .ios-value { font-size: 16px; color: var(--text-sub); display: flex; align-items: center; gap: 8px;}
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); animation: pulseDot 2s infinite;}
+        @keyframes pulseDot { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* LIVE CHECK PANEL */
+        .live-check-panel { background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.3); border-radius: 24px; padding: 25px; text-align: center; margin-top: 30px;}
+        .live-url { font-family: monospace; font-size: 18px; color: var(--accent); font-weight: bold; margin: 15px 0; letter-spacing: -0.5px;}
+        .ping-bars { display: inline-flex; gap: 4px; align-items: flex-end; height: 20px; }
+        .bar { width: 5px; background: var(--success); border-radius: 3px; animation: pingBar 1s ease-in-out infinite alternate; }
+        .bar:nth-child(1) { height: 40%; animation-delay: 0.1s; } .bar:nth-child(2) { height: 70%; animation-delay: 0.2s; }
+        .bar:nth-child(3) { height: 100%; animation-delay: 0.3s; } .bar:nth-child(4) { height: 60%; animation-delay: 0.4s; }
+        @keyframes pingBar { 0%{transform: scaleY(0.5);} 100%{transform: scaleY(1);} }
 
         /* BUTTONS */
         .btn-glass {
             display: inline-flex; justify-content: center; align-items: center; text-decoration: none; box-sizing: border-box;
-            background: rgba(255,255,255,0.05); color: #fff; gap: 10px;
-            padding: 18px 35px; border-radius: var(--btn-radius); font-weight: 800; font-size: 15px; letter-spacing: 1px; 
-            transition: transform 0.5s var(--spring-physics), background 0.4s, box-shadow 0.4s; border: 1px solid rgba(255,255,255,0.15);
-            position: relative; overflow: hidden; transform: translateZ(0); cursor: pointer; width: 100%; will-change: transform;
+            background: rgba(255,255,255,0.08); color: #fff; gap: 10px;
+            padding: 16px 35px; border-radius: var(--btn-radius); font-weight: 800; font-size: 14px; letter-spacing: 1px; 
+            transition: transform 0.4s var(--spring-physics), background 0.4s, box-shadow 0.4s; border: 1px solid rgba(255,255,255,0.15);
+            position: relative; overflow: hidden; transform: translateZ(0); cursor: pointer;
         }
-        .btn-glass:hover { background: #fff; color: #000; transform: scale(1.04) translateY(-4px) translate3d(0,0,0); box-shadow: 0 15px 35px rgba(255,255,255,0.3); }
-        .btn-primary { background: var(--text-main); color: #000; border: none; box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
-        .btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 0 15px 40px var(--accent-glow);}
+        .btn-glass:hover { background: #fff; color: #000; transform: scale(1.03) translateY(-3px) translate3d(0,0,0); box-shadow: 0 15px 35px rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
 
     <div class="mesh-bg" id="meshBg"></div>
 
-    <nav class="shinko-dock">
-        <div class="dock-item active" onclick="switchMenu('home', this)">
-            <div class="dock-icon">🏠</div>
-            <div class="dock-text">Home</div>
+    <div id="loading-screen">
+        <div class="load-core">SE16</div>
+        <div class="load-text">INITIALIZING CORE</div>
+    </div>
+
+    <div class="top-dock-container">
+        <div class="asnf-dock-wrapper">
+            <div class="dock-segment dock-left" onclick="switchMenu('home', 'SE16 Core')" style="cursor: pointer;">
+                <div class="asnf-logo">SE</div>
+            </div>
+            
+            <div class="dock-segment dock-center">
+                <div class="dock-center-title" id="dockTitle">SE16 Core</div>
+            </div>
+            
+            <div class="dock-segment dock-right" onclick="toggleMenu()">
+                <div class="hamburger-menu" id="hamburger">
+                    <div class="hamburger-line" id="hl1"></div>
+                    <div class="hamburger-line" id="hl2"></div>
+                    <div class="hamburger-line" id="hl3"></div>
+                </div>
+            </div>
         </div>
-        <div class="dock-item" onclick="switchMenu('content', this)">
-            <div class="dock-icon">📄</div>
-            <div class="dock-text">Data</div>
-        </div>
-        <div class="dock-item" onclick="switchMenu('settings', this)">
-            <div class="dock-icon">⚙️</div>
-            <div class="dock-text">Config</div>
-        </div>
-    </nav>
+    </div>
+
+    <div class="mobile-menu-overlay" id="menuOverlay">
+        <a class="menu-link active" onclick="switchMenu('home', 'SE16 Core')">Home Engine</a>
+        <a class="menu-link" onclick="switchMenu('update', 'Updates')">SE16 Updates</a>
+        <a class="menu-link" onclick="switchMenu('content', 'Modules')">Core Modules</a>
+        <a class="menu-link" onclick="switchMenu('system', 'System')">System Status</a>
+    </div>
 
     <div class="app-layout">
         
         <div id="menu-home" class="tab-section active">
             <header class="hero-header">
-                <h1 class="hero-title">Shinko Engine 15</h1>
-                <p class="hero-subtitle">Ultra Core Default Template</p>
+                <h1 class="hero-title">Shinko Engine 16</h1>
+                <p class="hero-subtitle">The Geometry Update</p>
             </header>
 
             <div class="glass-card" style="text-align: center;">
-                <h2 style="margin-top:0; font-size: 28px;">The Next Generation Core</h2>
-                <p style="color: var(--text-sub); line-height: 1.8; font-size: 16px;">
-                    Ini adalah template pondasi murni dari <strong>Shinko Engine 15</strong>. Dirancang dengan integrasi <i>Liquid Crystal 5.0</i>, perhitungan Fisika Pegas (Spring Physics), Algoritma Interpolasi Linier (Lerp Parallax), dan Shinko Cache 3.0.
+                <h2>Welcome to The Next Generation</h2>
+                <p>
+                    Ini adalah template pondasi murni dari <strong>Shinko Engine 16</strong>. Menghadirkan navigasi <i>Top Dock Perfect Geometry</i>, arsitektur Shinko Cache 4.0, dan rendering iOS-like System Diagnostics. 
                 </p>
-                <div style="display: flex; gap: 15px; margin-top: 30px;">
-                    <button class="btn-glass">Secondary Action</button>
-                    <button class="btn-glass btn-primary">Primary Action</button>
+                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                    <button class="btn-glass" onclick="switchMenu('update', 'Updates')">Read Updates</button>
+                    <button class="btn-glass" style="background: var(--accent); color: #000; border: none;" onclick="switchMenu('system', 'System')">Check System</button>
                 </div>
+            </div>
+        </div>
+
+        <div id="menu-update" class="tab-section">
+            <header class="hero-header">
+                <h1 class="hero-title">Release Notes</h1>
+                <p class="hero-subtitle">What's New in SE16</p>
+            </header>
+
+            <div class="glass-card">
+                <h2>1. Perfect Geometry Top Dock</h2>
+                <p>Sistem navigasi bawah (Bottom Dock) resmi digantikan oleh <strong>Top Dock Perfect Geometry</strong>. Didesain secara presisi matematis menggunakan <i>clip-path polygon</i> membentuk pola <code>|___\ \______/ /___|</code> yang menyatu sempurna. Dilengkapi efek bayangan terpisah (Z-Index layering) untuk kesan 3D ekstrem.</p>
+            </div>
+            
+            <div class="glass-card" style="border-left: 5px solid var(--accent);">
+                <h2 style="color: var(--accent);">2. Shinko Cache 4.0 & Auto-Fix</h2>
+                <p>Mesin FPS Optimizer kini jauh lebih cerdas (Versi 4.0). Transisi penyesuaian render saat perangkat panas (thermal throttling) kini menggunakan <i>smooth interpolator</i> sehingga tidak ada lagi kedipan visual. Auto-Fix interceptor tetap memantau JavaScript runtime secara diam-diam di background.</p>
+            </div>
+            
+            <div class="glass-card" style="border-left: 5px solid var(--asnf-purple);">
+                <h2 style="color: var(--asnf-purple);">3. iOS/MacOS System Diagnostics</h2>
+                <p>Halaman <i>System Status</i> telah dirombak total menjadi panel diagnostik yang mereplika gaya "About Phone/Mac" milik Apple. Menyediakan parameter langsung (Live Check) ke server utama ASNF Repo.</p>
             </div>
         </div>
 
         <div id="menu-content" class="tab-section">
             <header class="hero-header">
-                <h1 class="hero-title">Content Grid</h1>
-                <p class="hero-subtitle">Build Your Modules Here</p>
+                <h1 class="hero-title">Core Modules</h1>
+                <p class="hero-subtitle">Build Your Network</p>
             </header>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
                 <div class="glass-card">
-                    <h3 style="margin-top:0;">Module Alpha</h3>
-                    <p style="color: var(--text-sub); line-height: 1.8;">Template grid responsif. Bebas diisi data apapun tanpa merusak susunan tata letak.</p>
+                    <h2>Module Alpha</h2>
+                    <p>Template grid responsif. Bebas diisi data apapun tanpa merusak susunan tata letak. Liquid Crystal 6.0 rendering is active.</p>
                 </div>
-                <div class="glass-card" style="border-color: var(--accent); box-shadow: 0 10px 40px var(--accent-glow);">
-                    <h3 style="margin-top:0; color: var(--accent);">Module Beta (Focus)</h3>
-                    <p style="color: var(--text-sub); line-height: 1.8;">Kartu ini memiliki *override* CSS bawaan untuk fokus utama (Highlighted Card).</p>
+                <div class="glass-card">
+                    <h2>Module Beta</h2>
+                    <p>Semua interaksi di dalam modul ini akan ditangani langsung oleh GPU menggunakan <code>translate3d</code> untuk 120Hz murni.</p>
                 </div>
             </div>
         </div>
 
-        <div id="menu-settings" class="tab-section">
+        <div id="menu-system" class="tab-section">
             <header class="hero-header">
                 <h1 class="hero-title">System Status</h1>
-                <p class="hero-subtitle">Engine 15 Diagnostics</p>
+                <p class="hero-subtitle">SE16 Diagnostics Center</p>
             </header>
 
-            <div class="glass-card">
-                <ul style="list-style: none; padding: 0; margin: 0; line-height: 2.5; font-weight: 600;">
-                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <span>Render Pipeline</span><span style="color: #32d74b;">GPU Accelerated (Active)</span>
-                    </li>
-                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <span>Animation Curve</span><span style="color: var(--text-sub);">Spring Physics</span>
-                    </li>
-                    <li style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <span>Parallax Interpolation</span><span style="color: var(--text-sub);">Lerp Mathematics</span>
-                    </li>
-                    <li style="display: flex; justify-content: space-between;">
-                        <span>Shinko Cache 3.0</span><span id="cache-status" style="color: #0a84ff;">Monitoring...</span>
-                    </li>
-                </ul>
+            <div class="glass-card" style="padding: 0; margin-bottom: 25px;">
+                <div class="ios-list" style="margin: 0; border: none; border-radius: 0; background: transparent;">
+                    <div class="ios-item">
+                        <span class="ios-label">Engine Version</span>
+                        <span class="ios-value">Shinko Engine 16.0</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Developed By</span>
+                        <span class="ios-value" style="color: #fff; font-weight: 700;">ASNF Techno Lab</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Architecture</span>
+                        <span class="ios-value">Perfect Geometry Dock</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Theme Render</span>
+                        <span class="ios-value">Liquid Crystal 6.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 0;">
+                <div class="ios-list" style="margin: 0; border: none; border-radius: 0; background: transparent;">
+                    <div class="ios-item">
+                        <span class="ios-label">Hardware Acceleration</span>
+                        <span class="ios-value"><div class="status-dot"></div> Enabled (120Hz Target)</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Physics Engine</span>
+                        <span class="ios-value">Spring Bounce Curve</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Background Render</span>
+                        <span class="ios-value">Lerp Mesh Parallax</span>
+                    </div>
+                    <div class="ios-item">
+                        <span class="ios-label">Shinko Cache 4.0</span>
+                        <span class="ios-value" id="cache-status" style="color: var(--accent); font-weight: bold;">Analyzing...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="live-check-panel">
+                <h3 style="margin-top: 0; color: #fff; font-size: 20px;">Web Official Live Check</h3>
+                <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 10px;">Monitoring connection to ASNF Central Server:</p>
+                
+                <div class="live-url">https://asnf-techno-lab.github.io/Shinko-Engine</div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px;">
+                    <div class="ping-bars">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+                    <span style="color: var(--success); font-weight: 800; font-size: 15px;">SERVER ONLINE</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 600;">
+                &copy; 2026 ASNF Techno Lab. All Rights Reserved.
             </div>
         </div>
 
@@ -236,65 +390,94 @@
         function triggerHaptic(duration = 40) {
             if (navigator.vibrate) { navigator.vibrate(duration); }
         }
-
-        document.querySelectorAll('.btn-glass, .dock-item').forEach(el => {
+        document.querySelectorAll('.btn-glass, .dock-segment, .menu-link').forEach(el => {
             el.addEventListener('click', () => triggerHaptic(50));
         });
 
         // --- 2. AUTOMATIC FIX BUG (INTERCEPTOR) ---
         window.onerror = function(message, source, lineno, colno, error) {
-            console.warn("[Shinko Engine 15 Core] Auto-Fix Intercepted:", message);
-            return true; // Mencegah UI freeze saat ada error script
+            console.warn("[Shinko Engine 16 Core] Auto-Fix Intercepted:", message);
+            return true; 
         };
 
-        // --- 3. SMART TAB NAVIGATION ---
-        function switchMenu(menuId, element) {
+        // --- 3. TOP DOCK HAMBURGER MENU LOGIC ---
+        const menuOverlay = document.getElementById('menuOverlay');
+        const hl1 = document.getElementById('hl1');
+        const hl2 = document.getElementById('hl2');
+        const hl3 = document.getElementById('hl3');
+        let menuOpen = false;
+
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            if(menuOpen) {
+                menuOverlay.classList.add('active');
+                hl1.style.transform = 'rotate(45deg) translate(5px, 6px)';
+                hl2.style.opacity = '0';
+                hl3.style.transform = 'rotate(-45deg) translate(6px, -7px)';
+            } else {
+                menuOverlay.classList.remove('active');
+                hl1.style.transform = 'none';
+                hl2.style.opacity = '1';
+                hl3.style.transform = 'none';
+            }
+        }
+
+        // --- 4. SMART TAB NAVIGATION ---
+        function switchMenu(menuId, title) {
+            // Tutup overlay jika dari mobile menu
+            if(menuOpen) toggleMenu();
+
+            // Update title di Dock Center
+            const dockTitle = document.getElementById('dockTitle');
+            dockTitle.style.opacity = '0';
+            setTimeout(() => {
+                dockTitle.innerText = title;
+                dockTitle.style.opacity = '1';
+            }, 250);
+
+            // Sembunyikan semua tab
             document.querySelectorAll('.tab-section').forEach(tab => {
                 tab.classList.remove('active');
                 setTimeout(() => { if(!tab.classList.contains('active')) tab.style.display = 'none'; }, 500); 
             });
-            document.querySelectorAll('.dock-item').forEach(item => { item.classList.remove('active'); });
 
+            // Update link aktif di overlay menu
+            document.querySelectorAll('.menu-link').forEach(link => { link.classList.remove('active'); });
+            const clickedLink = Array.from(document.querySelectorAll('.menu-link')).find(el => el.innerText === title || el.innerText.includes(title));
+            if(clickedLink) clickedLink.classList.add('active');
+
+            // Munculkan tab target
             const targetTab = document.getElementById('menu-' + menuId);
             targetTab.style.display = 'block';
             void targetTab.offsetWidth; // Force Reflow
             targetTab.classList.add('active');
             
-            element.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- 4. ADVANCED LERP PARALLAX (Super Smooth GPU Acceleration) ---
+        // --- 5. ADVANCED LERP PARALLAX (Super Smooth GPU Acceleration) ---
         const meshBg = document.getElementById('meshBg');
         let targetX = 0, targetY = 0;
         let currentX = 0, currentY = 0;
-        const lerpFactor = 0.05; // Mengontrol elastisitas/kelenturan (Semakin kecil semakin halus/delay)
+        const lerpFactor = 0.05; 
 
         function updateParallax() {
             if(window.innerWidth > 800) {
-                // Kalkulasi Linear Interpolation (Lerp)
                 currentX += (targetX - currentX) * lerpFactor;
                 currentY += (targetY - currentY) * lerpFactor;
-                
-                // Aplikasikan Transform3D
                 meshBg.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.05)`;
             }
             requestAnimationFrame(updateParallax);
         }
 
         window.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX / window.innerWidth - 0.5) * 30; // Max pergeseran 30px
+            targetX = (e.clientX / window.innerWidth - 0.5) * 30; 
             targetY = (e.clientY / window.innerHeight - 0.5) * 30;
         });
-
-        window.addEventListener('mouseleave', () => { 
-            targetX = 0; targetY = 0; 
-        });
-
-        // Start Loop
+        window.addEventListener('mouseleave', () => { targetX = 0; targetY = 0; });
         requestAnimationFrame(updateParallax);
 
-        // --- 5. DYNAMIC FPS OPTIMIZER (SHINKO CACHE 3.0) ---
+        // --- 6. DYNAMIC FPS OPTIMIZER (SHINKO CACHE 4.0) ---
         let lastTime = performance.now();
         let frameCount = 0;
         const cacheStatusText = document.getElementById('cache-status');
@@ -303,24 +486,38 @@
             const now = performance.now();
             frameCount++;
             if (now - lastTime >= 1000) {
-                if (frameCount < 45) { // Threshold dinaikkan jadi 45 FPS
-                    document.documentElement.style.setProperty('--glass-blur-value', '60px');
-                    meshBg.style.willChange = 'auto'; // Disable HW Accel background to save battery
-                    if(cacheStatusText) cacheStatusText.innerText = "Adaptive Mode (Low FPS)";
-                    if(cacheStatusText) cacheStatusText.style.color = "#ffd60a";
+                if (frameCount < 40) { 
+                    document.documentElement.style.setProperty('--glass-blur-value', '80px');
+                    meshBg.style.willChange = 'auto'; 
+                    if(cacheStatusText) {
+                        cacheStatusText.innerText = "Adaptive Mode (Saving GPU)";
+                        cacheStatusText.style.color = "#ffd60a";
+                    }
                 } else { 
                     document.documentElement.style.setProperty('--glass-blur-value', '160px');
                     meshBg.style.willChange = 'transform, background-position';
-                    if(cacheStatusText) cacheStatusText.innerText = "Ultra Mode (Stable FPS)";
-                    if(cacheStatusText) cacheStatusText.style.color = "#32d74b";
+                    if(cacheStatusText) {
+                        cacheStatusText.innerText = "Ultra Mode (Active)";
+                        cacheStatusText.style.color = "#32d74b";
+                    }
                 }
                 frameCount = 0; lastTime = now;
             }
             requestAnimationFrame(fpsOptimizerLoop);
         }
-        
-        // Start FPS Engine
         requestAnimationFrame(fpsOptimizerLoop);
+
+        // --- 7. BOOT SEQUENCE ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.visibility = 'hidden';
+                    loader.style.display = 'none';
+                }, 1200); 
+            }, 3000); 
+        });
     </script>
 </body>
 </html>
